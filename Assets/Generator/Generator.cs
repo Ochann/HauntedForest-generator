@@ -9,15 +9,17 @@ public class Generator : MonoBehaviour
     [SerializeField, Range(0, 100)] private int forestFillRate;
     [SerializeField, Range(0, 100)] private int dirtFillRate;
 
+    [SerializeField] private Tilemap forestMap;
+    [SerializeField] private Tilemap dirtMap;
+
+    //[SerializeField] private TileBase treetop;
+    [SerializeField] private TileBase dirt;
+    [SerializeField] private TileBase grass;
+
+    [SerializeField] private RuleTile treetop;
+
     int[,] grid;
     int[,] forestGrid;
-
-    public Tilemap forestMap;
-    public Tilemap dirtMap;
-
-    public TileBase treetop;
-    public TileBase dirt;
-    public TileBase grass;
 
     enum Map
     {
