@@ -11,9 +11,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Ground_
+  - Agents_
+  - TreeTop_
   - 
   - 
   - 
@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 3463102819
+    locked: 0
+  - name: Agents
+    uniqueID: 2826664067
+    locked: 0
+  - name: TreeTop
+    uniqueID: 2417419681
+    locked: 1
