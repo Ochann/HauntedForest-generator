@@ -12,9 +12,8 @@ public class Generator : MonoBehaviour
     [SerializeField] private Tilemap forestMap;
     [SerializeField] private Tilemap dirtMap;
 
-    //[SerializeField] private TileBase treetop;
     [SerializeField] private TileBase dirt;
-    [SerializeField] private TileBase grass;
+    [SerializeField] private RuleTile grass;
 
     [SerializeField] private RuleTile treetop;
 
@@ -59,7 +58,8 @@ public class Generator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                grid[x, y] = (rand.Next(0, 100) < fillRate) ? 1 : 0;
+                if (x == 0 || x == width-1 || y == 0 || y == height - 1) grid[x, y] = 1;
+                else grid[x, y] = (rand.Next(0, 100) < fillRate) ? 1 : 0;
             }
         }
     }
