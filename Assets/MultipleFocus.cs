@@ -5,11 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class MultipleFocus : MonoBehaviour
 {
-    [SerializeField] private List<Transform> targets;
+    public List<Transform> targets;
     [SerializeField] private Vector3 offset;
 
     [SerializeField] private float minZoom = 38f;
-    [SerializeField] private float maxZoom = 5f;
+    [SerializeField] private float maxZoom = 15f;
     [SerializeField] private float zoomLimiter = 50f;
 
     private Camera cam;
@@ -59,5 +59,11 @@ public class MultipleFocus : MonoBehaviour
             bounds.Encapsulate(targets[i].position);
         }
         return bounds.size.x;
+    }
+
+    public void addTarget(Transform target)
+    {
+        Debug.Log("add target..");
+        targets.Add(target);
     }
 }

@@ -17,10 +17,17 @@ public class Generator : MonoBehaviour
 
     [SerializeField] private RuleTile treetop;
 
-    int[,] grid;
-    int[,] forestGrid;
+    [SerializeField] private int adventurerNum = 1;
+    [SerializeField] private int forestSpiritNum = 1;
+    [SerializeField] private GameObject adventurerPrefab;
+    [SerializeField] private GameObject forestSpiritPrefab;
 
-    enum Map
+    [SerializeField] private MultipleFocus ref_multiFocus;
+
+    private int[,] grid;
+    private int[,] forestGrid;
+
+    private enum Map
     {
         Forest,
         Dirt
@@ -29,8 +36,11 @@ public class Generator : MonoBehaviour
     private void Start()
     {
         GenerateMap();
+
+        SpawnAgents();
     }
 
+    // Generate Map
     private void GenerateMap()
     {
         GenerateGrid(Map.Forest);
@@ -155,5 +165,21 @@ public class Generator : MonoBehaviour
         }
     }
 
+
+    // Spawn Agents
+    private void SpawnAgents()
+    {
+        for(int i = 1; i <= adventurerNum;  i++)
+        {
+            GameObject obj1 = Instantiate(adventurerPrefab, new Vector3(i*5f, i*5f, 0f), new Quaternion());
+            ref_multiFocus.addTarget(obj1.transform);
+        }
+
+        for (int i = 1; i <= forestSpiritNum; i++)
+        {
+            GameObject obj2 = Instantiate(forestSpiritPrefab, new Vector3(i*8f, i*8f, 0f), new Quaternion());
+            ref_multiFocus.addTarget(obj2.transform);
+        }
+    }
 }
 
