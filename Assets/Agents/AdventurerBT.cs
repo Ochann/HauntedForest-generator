@@ -11,12 +11,20 @@ public class AdventurerBT : BaseBT
     public float distSpirit = 50f;
 
 
-    private AdventurerMove ref_Move;
+    private BaseMovement ref_Move;
+    private Manager ref_Manager;
 
     // Start is called before the first frame update
     void Start()
     {
-        ref_Move = GetComponent<AdventurerMove>();
+        ref_Move = GetComponent<BaseMovement>();
+
+        GameObject managerObj = GameObject.Find("Manager");
+        if(managerObj != null)
+        {
+            ref_Manager = managerObj.GetComponent<Manager>();
+        }
+
         SwitchBT(FinalBT());
     }
 
@@ -31,23 +39,43 @@ public class AdventurerBT : BaseBT
     private void Move(float velocity)
     {
         ref_Move.AIMove(velocity);
-        Debug.Log("ai wandering...");
+        //Debug.Log("ai wandering...");
     }
 
     private void AttackSpirit()
     {
         Debug.Log("ai attacking spirit...");
+        // test: chase
+        if (ref_Manager != null)
+        {
+            GameObject player = ref_Manager.FindGameObjByName("Player");
+            if (player != null)
+            {
+                float distance = Vector2.Distance(transform.position, player.transform.position);
+                Vector2 direction = player.transform.position - this.transform.position;
+                direction.Normalize();
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                float speed = 2f;
+                if (distance < 10f)
+                {
+                    transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
+                    transform.rotation = Quaternion.Euler(Vector3.forward * angle);
+                }
+            }
+        }
     }
 
     private void RunAway()
     {
-        Debug.Log("ai running away...");
+        //Debug.Log("ai running away...");
     }
 
     private void PickUpTreasure()
     {
-        Debug.Log("ai picking treasure...");
+        //Debug.Log("ai picking treasure...");
     }
+
+
 
     /***      Behaviour Node: MoveBehaviour      ***/
     // BT 1: 

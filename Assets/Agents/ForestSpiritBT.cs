@@ -9,11 +9,11 @@ public class ForestSpiritBT : BaseBT
     public float distAdventurer = 50f;
 
 
-    private ForestSpiritMove ref_Move;
+    private BaseMovement ref_Move;
     // Start is called before the first frame update
     void Start()
     {
-        ref_Move = GetComponent<ForestSpiritMove>();
+        ref_Move = GetComponent<BaseMovement>();
         SwitchBT(FinalBT());
     }
 
