@@ -6,8 +6,8 @@ using NPBehave;
 public class AdventurerBT : MonoBehaviour
 {
     public bool hasTreasure = false;
-    public bool seeSpirit = false;
-    public bool seeTreasure = false;
+    //public bool seeSpirit = false;
+    //public bool seeTreasure = false;
 
     public float distTreasure = 50f;
     public float distSpirit = 50f;
@@ -41,6 +41,7 @@ public class AdventurerBT : MonoBehaviour
         //SwitchBT(ChooseBT(curStatus));
     }
 
+    /*
     private void UpdateStatus()
     {
         if (hasTreasure)
@@ -54,7 +55,7 @@ public class AdventurerBT : MonoBehaviour
             else if (seeTreasure) curStatus = Status.Seek;
             else curStatus = Status.Wander; 
         }
-    }
+    }*/
 
     private void SwitchBT(Root t)
     {
@@ -87,8 +88,8 @@ public class AdventurerBT : MonoBehaviour
     private void UpdateBlackboard()
     {
         blackboard["hasTreasure"] = hasTreasure;
-        blackboard["seeSpirit"] = seeSpirit;
-        blackboard["seeTreasure"] = seeTreasure;
+        //blackboard["seeSpirit"] = seeSpirit;
+        //blackboard["seeTreasure"] = seeTreasure;
 
         blackboard["distSpirit"] = distSpirit;
         blackboard["distTreasure"] = distTreasure;
@@ -157,15 +158,29 @@ public class AdventurerBT : MonoBehaviour
         return new Action(() => PickUpTreasure());
     }
 
+
+    // 1.adventurer with treasure will attack forest spirit while seeing it
+    // 2.wander if not see
     private Node WithTreasureNode()
     {
-        Node sel = new Selector();
-        return sel;
+        Node sel = new Selector(MoveBehaviour(),
+                                AttackBehaviour());
+        Node bb = new BlackboardCondition("hasTreasure",
+            Operator.IS_EQUAL, 1, Stops.IMMEDIATE_RESTART, sel);
+
+        return bb;
     }
 
+    // 1.adventurer without treasure will run away from forest spirit while seeing it
+    // 2.close and pick up treasure if see
+    // 3.wander if not see anything
+    // how to determine the priority of flee/seek treasure actions?
     private Node WithoutTreasureNode()
     {
-        return new Selector();
+        Node sel = new Selector(MoveBehaviour(),
+                                FleeBehaviour(),
+                                SeekTreasureBehaviour());
+        return sel;
     }
 
     private Root FullBT()
@@ -174,6 +189,15 @@ public class AdventurerBT : MonoBehaviour
                                 FleeBehaviour(),
                                 AttackBehaviour(),
                                 SeekTreasureBehaviour());
+        Node service = new Service(0.2f, UpdateBlackboard, sel);
+        Root root = new Root(service);
+        return root;
+    }
+
+    private Root FinalBT()
+    {
+        Node sel = new Selector(WithTreasureNode(),
+                                WithoutTreasureNode());
         Node service = new Service(0.2f, UpdateBlackboard, sel);
         Root root = new Root(service);
         return root;
