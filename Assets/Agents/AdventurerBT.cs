@@ -9,6 +9,9 @@ public class AdventurerBT : MonoBehaviour
     public bool seeSpirit = false;
     public bool seeTreasure = false;
 
+    public float distTreasure = 50f;
+    public float distSpirit = 50f;
+
     private Root behaviourTree;
     private Blackboard blackboard;
 
@@ -83,13 +86,18 @@ public class AdventurerBT : MonoBehaviour
 
     private void UpdateBlackboard()
     {
+        blackboard["hasTreasure"] = hasTreasure;
+        blackboard["seeSpirit"] = seeSpirit;
+        blackboard["seeTreasure"] = seeTreasure;
 
+        blackboard["distSpirit"] = distSpirit;
+        blackboard["distTreasure"] = distTreasure;
     }
 
     /***      Actions       ***/
-    private void Wander()
+    private void Move(float velocity)
     {
-        ref_Move.AIMove();
+        ref_Move.AIMove(velocity);
         //Debug.Log("ai wandering...");
     }
 
@@ -108,18 +116,37 @@ public class AdventurerBT : MonoBehaviour
         Debug.Log("ai picking treasure...");
     }
 
-    /***      Behaviour Trees      ***/
+    /***      Behaviour Node: MoveBehaviour      ***/
     // BT 1: 
-    private Node WanderBehaviour() 
+    private Node SetVelocity(float velocity)
     {
-        return new Action(() => Wander());
+        return new Action(() => Move(velocity));
     }
 
+    // Move forward at full speed for a random time
+    private Node RandomMove()
+    {
+        float waitTime = UnityEngine.Random.Range(0.1f, 1.0f);
+        return new Sequence(SetVelocity(1f),
+                            new Wait(waitTime),
+                            SetVelocity(0));
+    }
+    private Node MoveBehaviour() 
+    {
+        Node seq = new Sequence(RandomMove());
+        Node bb = new BlackboardCondition("distSpirit", 
+            Operator.IS_GREATER, 40f, Stops.IMMEDIATE_RESTART, seq);
+
+        return bb;
+    }
+
+    /***      Behaviour Node: FleeBehaviour      ***/
     private Node FleeBehaviour()
     {
         return new Action(() => RunAway());
     }
 
+    /***      Behaviour Node: AttackBehaviour      ***/
     private Node AttackBehaviour()
     {
         return new Action(() => AttackSpirit());
@@ -130,9 +157,20 @@ public class AdventurerBT : MonoBehaviour
         return new Action(() => PickUpTreasure());
     }
 
+    private Node WithTreasureNode()
+    {
+        Node sel = new Selector();
+        return sel;
+    }
+
+    private Node WithoutTreasureNode()
+    {
+        return new Selector();
+    }
+
     private Root FullBT()
     {
-        Node sel = new Selector(WanderBehaviour(),
+        Node sel = new Selector(MoveBehaviour(),
                                 FleeBehaviour(),
                                 AttackBehaviour(),
                                 SeekTreasureBehaviour());

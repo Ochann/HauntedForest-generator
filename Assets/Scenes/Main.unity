@@ -875,7 +875,7 @@ MonoBehaviour:
   grass: {fileID: 11400000, guid: 25d223d11e28c9c449e6256d7f80feb1, type: 2}
   treetop: {fileID: 11400000, guid: 41464340129ee8d438a4f511ab97ef04, type: 2}
   adventurerNum: 1
-  forestSpiritNum: 1
+  forestSpiritNum: 0
   adventurerPrefab: {fileID: 399770856505285769, guid: bb9ff9b6ed3c2ca4da558fc1375403bf, type: 3}
   forestSpiritPrefab: {fileID: 6311145800248524203, guid: b62e2a55f5f493e458292405953d1566, type: 3}
   ref_multiFocus: {fileID: 519420033}
