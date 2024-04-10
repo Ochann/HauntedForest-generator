@@ -44,6 +44,6 @@ public class AdventurerMove : MonoBehaviour
     {
         //Debug.Log("ai wandering...");
         m_AIMovement = (move > 1) ? 1 : (move < -1) ? -1 : move;
-        Debug.Log(m_AIMovement);
+        //Debug.Log(m_AIMovement);
     }
 }

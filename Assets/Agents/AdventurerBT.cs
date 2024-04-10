@@ -3,94 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using NPBehave;
 
-public class AdventurerBT : MonoBehaviour
+public class AdventurerBT : BaseBT
 {
+    // temp params for test behaviour tree logic
     public bool hasTreasure = false;
-    //public bool seeSpirit = false;
-    //public bool seeTreasure = false;
-
     public float distTreasure = 50f;
     public float distSpirit = 50f;
 
-    private Root behaviourTree;
-    private Blackboard blackboard;
 
     private AdventurerMove ref_Move;
-
-    private enum Status
-    {
-        Wander,
-        Flee,
-        Attack,
-        Seek
-    }
-
-    private Status curStatus = Status.Wander;
 
     // Start is called before the first frame update
     void Start()
     {
         ref_Move = GetComponent<AdventurerMove>();
-        SwitchBT(FullBT());
+        SwitchBT(FinalBT());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //UpdateStatus();
-        //SwitchBT(ChooseBT(curStatus));
-    }
-
-    /*
-    private void UpdateStatus()
-    {
-        if (hasTreasure)
-        {
-            if (seeSpirit) curStatus = Status.Attack;
-            else curStatus = Status.Wander;
-        }
-        else
-        {
-            if (seeSpirit) curStatus = Status.Flee;
-            else if (seeTreasure) curStatus = Status.Seek;
-            else curStatus = Status.Wander; 
-        }
-    }*/
-
-    private void SwitchBT(Root t)
-    {
-        if(behaviourTree != null) behaviourTree.Stop();
-        behaviourTree = t;
-        blackboard = behaviourTree.Blackboard;
-        behaviourTree.Start();
-    }
-
-    //private Root ChooseBT(Status status)
-    //{
-    //    switch(status)
-    //    {
-    //        case Status.Wander:
-    //            return WanderBT();
-
-    //        case Status.Flee:
-    //            return FleeBT();
-
-    //        case Status.Attack:
-    //            return AttackBT();
-
-    //        case Status.Seek:
-    //            return SeekTreasureBT();
-
-    //        default: return WanderBT();
-    //    }
-    //}
-
-    private void UpdateBlackboard()
+    public override void UpdateBlackboard()
     {
         blackboard["hasTreasure"] = hasTreasure;
-        //blackboard["seeSpirit"] = seeSpirit;
-        //blackboard["seeTreasure"] = seeTreasure;
-
         blackboard["distSpirit"] = distSpirit;
         blackboard["distTreasure"] = distTreasure;
     }
@@ -99,7 +31,7 @@ public class AdventurerBT : MonoBehaviour
     private void Move(float velocity)
     {
         ref_Move.AIMove(velocity);
-        //Debug.Log("ai wandering...");
+        Debug.Log("ai wandering...");
     }
 
     private void AttackSpirit()
@@ -144,7 +76,9 @@ public class AdventurerBT : MonoBehaviour
     /***      Behaviour Node: FleeBehaviour      ***/
     private Node FleeBehaviour()
     {
-        return new Action(() => RunAway());
+        Node bb = new BlackboardCondition("distSpirit",
+            Operator.IS_SMALLER, 40f, Stops.IMMEDIATE_RESTART, new Action(() => RunAway()));
+        return bb;
     }
 
     /***      Behaviour Node: AttackBehaviour      ***/
@@ -155,7 +89,9 @@ public class AdventurerBT : MonoBehaviour
 
     private Node SeekTreasureBehaviour()
     {
-        return new Action(() => PickUpTreasure());
+        Node bb = new BlackboardCondition("distTreasure",
+            Operator.IS_SMALLER, 40f, Stops.IMMEDIATE_RESTART, new Action(() => PickUpTreasure()));
+        return bb;
     }
 
 
@@ -166,7 +102,7 @@ public class AdventurerBT : MonoBehaviour
         Node sel = new Selector(MoveBehaviour(),
                                 AttackBehaviour());
         Node bb = new BlackboardCondition("hasTreasure",
-            Operator.IS_EQUAL, 1, Stops.IMMEDIATE_RESTART, sel);
+            Operator.IS_EQUAL, true, Stops.IMMEDIATE_RESTART, sel);
 
         return bb;
     }
@@ -176,22 +112,11 @@ public class AdventurerBT : MonoBehaviour
     // 3.wander if not see anything
     // how to determine the priority of flee/seek treasure actions?
     private Node WithoutTreasureNode()
-    {
-        Node sel = new Selector(MoveBehaviour(),
-                                FleeBehaviour(),
-                                SeekTreasureBehaviour());
-        return sel;
-    }
+    {  
+        Node sel1 = new Selector(SeekTreasureBehaviour(), new Sequence(RandomMove()));
+        Node sel = new Selector(FleeBehaviour(), sel1);
 
-    private Root FullBT()
-    {
-        Node sel = new Selector(MoveBehaviour(),
-                                FleeBehaviour(),
-                                AttackBehaviour(),
-                                SeekTreasureBehaviour());
-        Node service = new Service(0.2f, UpdateBlackboard, sel);
-        Root root = new Root(service);
-        return root;
+        return sel;
     }
 
     private Root FinalBT()
@@ -202,5 +127,49 @@ public class AdventurerBT : MonoBehaviour
         Root root = new Root(service);
         return root;
     }
+
+    //private enum Status
+    //{
+    //    Wander,
+    //    Flee,
+    //    Attack,
+    //    Seek
+    //}
+
+    //private Root ChooseBT(Status status)
+    //{
+    //    switch(status)
+    //    {
+    //        case Status.Wander:
+    //            return WanderBT();
+
+    //        case Status.Flee:
+    //            return FleeBT();
+
+    //        case Status.Attack:
+    //            return AttackBT();
+
+    //        case Status.Seek:
+    //            return SeekTreasureBT();
+
+    //        default: return WanderBT();
+    //    }
+    //}
+
+    
+    //private void UpdateStatus()
+    //{
+    //    if (hasTreasure)
+    //    {
+    //        if (seeSpirit) curStatus = Status.Attack;
+    //        else curStatus = Status.Wander;
+    //    }
+    //    else
+    //    {
+    //        if (seeSpirit) curStatus = Status.Flee;
+    //        else if (seeTreasure) curStatus = Status.Seek;
+    //        else curStatus = Status.Wander; 
+    //    }
+    //}
 
 }

@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8053380606264249608}
   - component: {fileID: 1038419256123381049}
   - component: {fileID: -1885584025214170135}
+  - component: {fileID: -7461123289511741280}
+  - component: {fileID: 6496182602002153422}
   m_Layer: 0
   m_Name: ForestSpirit
   m_TagString: Untagged
@@ -158,3 +160,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-7461123289511741280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311145800248524203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a524d52bc5873354a97251a53ad781b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6496182602002153422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311145800248524203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c637e3fead8bcf47ab277317579fad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
