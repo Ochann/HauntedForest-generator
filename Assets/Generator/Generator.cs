@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
+using NavMeshPlus.Components;
 
 public class Generator : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class Generator : MonoBehaviour
 
     [SerializeField] private MultipleFocus ref_multiFocus;
     [SerializeField] private Manager ref_manager;
+    [SerializeField] private NavMeshSurface navMesh;
 
     private int[,] grid;
     private int[,] forestGrid;
@@ -167,6 +169,11 @@ public class Generator : MonoBehaviour
                     else dirtMap.SetTile(pos, grass);
                 }
             }
+        }
+
+        if(type == Map.Forest)
+        {
+            navMesh.BuildNavMesh();
         }
     }
 

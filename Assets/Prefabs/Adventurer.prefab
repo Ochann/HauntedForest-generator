@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6150161429346764805}
   - component: {fileID: -5934243256252491576}
   - component: {fileID: -1448018264017457762}
+  - component: {fileID: -1543059868445855306}
   m_Layer: 0
   m_Name: Adventurer
   m_TagString: Adventurer
@@ -103,7 +104,6 @@ MonoBehaviour:
   hasTreasure: 0
   distTreasure: 50
   distSpirit: 50
-  player: {fileID: 7907432904938074033, guid: 933cada5ab85fd74793c2dee0103b3c5, type: 3}
 --- !u!50 &6150161429346764805
 Rigidbody2D:
   serializedVersion: 4
@@ -189,3 +189,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Speed: 20
+--- !u!195 &-1543059868445855306
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399770856505285769}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

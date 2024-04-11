@@ -1,16 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BaseMovement : MonoBehaviour
 {
     private float m_AIMovement;
     private Rigidbody2D m_Rigidbody;
     public float m_Speed = 20f;
+
+    private Manager ref_Manager;
+
+    private NavMeshAgent agent;
     // Start is called before the first frame update
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody2D>();
+
+        GameObject managerObj = GameObject.Find("Manager");
+        if (managerObj != null)
+        {
+            ref_Manager = managerObj.GetComponent<Manager>();
+        }
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     // Update is called once per frame
@@ -36,5 +51,28 @@ public class BaseMovement : MonoBehaviour
     {
         m_AIMovement = (move > 1) ? 1 : (move < -1) ? -1 : move;
         //Debug.Log(m_AIMovement);
+    }
+
+    public void ChaseObject(string name)
+    {
+        // test: chase
+        if (ref_Manager != null)
+        {
+            GameObject obj = ref_Manager.FindGameObjByName(name);
+            if (obj != null)
+            {
+                float distance = Vector2.Distance(transform.position, obj.transform.position);
+                Vector2 direction = obj.transform.position - this.transform.position;
+                direction.Normalize();
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                float speed = 2f;
+                if (distance < 10f)
+                {
+                    //transform.position = Vector2.MoveTowards(this.transform.position, obj.transform.position, speed * Time.deltaTime);
+                    agent.SetDestination(obj.transform.position);
+                    transform.rotation = Quaternion.Euler(Vector3.forward * angle);
+                }
+            }
+        }
     }
 }
