@@ -5,23 +5,27 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class MultipleFocus : MonoBehaviour
 {
-    public List<Transform> targets;
+    private List<Transform> targets;
     [SerializeField] private Vector3 offset;
 
     [SerializeField] private float minZoom = 38f;
     [SerializeField] private float maxZoom = 15f;
     [SerializeField] private float zoomLimiter = 50f;
 
+    [SerializeField] private Manager ref_manager;
+
     private Camera cam;
 
     private void Start()
     {
         cam = GetComponent<Camera>();
+        
     }
 
     private void LateUpdate()
     {
-        if(targets.Count == 0) { return; }
+        targets = ref_manager.GetTransforms();
+        if (targets.Count == 0) { return; }
 
         Move();
         Zoom();

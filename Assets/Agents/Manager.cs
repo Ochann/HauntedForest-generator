@@ -17,11 +17,31 @@ public class Manager : MonoBehaviour
         Debug.Log(obj.name);
     }
 
+    public void RemoveAllObjects()
+    {
+        foreach (KeyValuePair<string, GameObject> entry in gameObjects)
+        {
+            Destroy(entry.Value, 0.2f);
+        }
+        gameObjects.Clear();
+    }
+
     public GameObject FindGameObjByName(string name)
     {
         GameObject obj;
         if(gameObjects.TryGetValue(name, out obj)) { return obj; }
         return null;
     }
-   
+
+    public List<Transform> GetTransforms()
+    {
+        List<Transform> targets = new List<Transform>();
+        foreach (KeyValuePair<string, GameObject> entry in gameObjects)
+        {
+            Transform transform = entry.Value.transform;
+            targets.Add(transform);
+        }
+        return targets;
+    }
+
 }

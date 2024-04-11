@@ -25,7 +25,7 @@ public class Generator : MonoBehaviour
     [SerializeField] private GameObject treasurePrefab;
     [SerializeField] private GameObject playerPrefab;
 
-    [SerializeField] private MultipleFocus ref_multiFocus;
+    //[SerializeField] private MultipleFocus ref_multiFocus;
     [SerializeField] private Manager ref_manager;
     [SerializeField] private NavMeshSurface navMesh;
 
@@ -124,7 +124,10 @@ public class Generator : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Regenerate");
+            ref_manager.RemoveAllObjects();
             GenerateMap();
+            SpawnAgents();
+            SpawnItems();
         }
     }
 
@@ -183,8 +186,19 @@ public class Generator : MonoBehaviour
     {
         for(int i = 1; i <= adventurerNum;  i++)
         {
-            GameObject obj = Instantiate(adventurerPrefab, new Vector3(i*5f, i*5f, 0f), new Quaternion());
-            ref_multiFocus.addTarget(obj.transform);
+            Vector3 pos;
+            while (true)
+            {
+                int x = UnityEngine.Random.Range(0, width);
+                int y = UnityEngine.Random.Range(0, height);
+                if (forestGrid[x, y] == 0)
+                {
+                    pos = new Vector3(x, y, 0) - new Vector3Int(width / 2, height / 2, 0);
+                    break;
+                }
+            }
+            GameObject obj = Instantiate(adventurerPrefab, pos, new Quaternion());
+            //ref_multiFocus.addTarget(obj.transform);
             obj.name = adventurerPrefab.name + "_" + i;
             ref_manager.AddObject(obj);
         }
@@ -192,7 +206,7 @@ public class Generator : MonoBehaviour
         for (int i = 1; i <= forestSpiritNum; i++)
         {
             GameObject obj = Instantiate(forestSpiritPrefab, new Vector3(i*8f, i*8f, 0f), new Quaternion());
-            ref_multiFocus.addTarget(obj.transform);
+            //ref_multiFocus.addTarget(obj.transform);
             obj.name = forestSpiritPrefab.name + "_" + i;
             ref_manager.AddObject(obj);
         }
@@ -201,12 +215,12 @@ public class Generator : MonoBehaviour
     private void SpawnItems()
     {
         GameObject obj1 = Instantiate(treasurePrefab, new Vector3(0f, 0f, 0f), new Quaternion());
-        ref_multiFocus.addTarget(obj1.transform);
+        //ref_multiFocus.addTarget(obj1.transform);
         ref_manager.AddObject(obj1);
 
         GameObject obj2 = Instantiate(playerPrefab, new Vector3(0f, 0f, 0f), new Quaternion());
         obj2.name = playerPrefab.name; 
-        ref_multiFocus.addTarget(obj2.transform);
+        //ref_multiFocus.addTarget(obj2.transform);
         ref_manager.AddObject(obj2);
         
 

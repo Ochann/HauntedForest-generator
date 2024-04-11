@@ -22,6 +22,11 @@ public class AdventurerBT : BaseBT
         SwitchBT(FinalBT());
     }
 
+    private void OnDestroy()
+    {
+        if(behaviourTree != null) behaviourTree.Stop();
+    }
+
     public override void UpdateBlackboard()
     {
         blackboard["hasTreasure"] = hasTreasure;

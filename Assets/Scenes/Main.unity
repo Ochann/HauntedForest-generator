@@ -228,11 +228,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1989253f5511ce43861326a1b09ede7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targets: []
   offset: {x: 0, y: 0, z: -10}
   minZoom: 38
   maxZoom: 10
   zoomLimiter: 50
+  ref_manager: {fileID: 1522295755}
 --- !u!1 &1340357621
 GameObject:
   m_ObjectHideFlags: 0
