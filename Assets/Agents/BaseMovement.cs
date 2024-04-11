@@ -55,25 +55,28 @@ public class BaseMovement : MonoBehaviour
 
     public void ChaseObject(string name)
     {
-        // test: chase
         if (ref_Manager != null)
         {
             GameObject obj = ref_Manager.FindGameObjByName(name);
-            Debug.Log(obj);
             if (obj != null)
             {
-                float distance = Vector2.Distance(transform.position, obj.transform.position);
-                Vector2 direction = obj.transform.position - this.transform.position;
-                direction.Normalize();
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                //float speed = 2f;
-                if (distance < 60f)
-                {
-                    //transform.position = Vector2.MoveTowards(this.transform.position, obj.transform.position, speed * Time.deltaTime);
-                    agent.SetDestination(obj.transform.position);
-                    transform.rotation = Quaternion.Euler(Vector3.forward * angle);
-                }
+                MoveToTarget(obj.transform.position);
             }
+        }
+    }
+
+    public void MoveToTarget(Vector3 position)
+    {
+        float distance = Vector2.Distance(transform.position, position);
+        Vector2 direction = position - this.transform.position;
+        direction.Normalize();
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        //float speed = 2f;
+        if (distance < 60f)
+        {
+            //transform.position = Vector2.MoveTowards(this.transform.position, obj.transform.position, speed * Time.deltaTime);
+            agent.SetDestination(position);
+            transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
     }
 }

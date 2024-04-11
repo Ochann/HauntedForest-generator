@@ -21,7 +21,7 @@ public class Manager : MonoBehaviour
     {
         foreach (KeyValuePair<string, GameObject> entry in gameObjects)
         {
-            Destroy(entry.Value, 0.2f);
+            Destroy(entry.Value, 0.1f);
         }
         gameObjects.Clear();
     }

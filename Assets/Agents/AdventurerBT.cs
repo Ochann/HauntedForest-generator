@@ -120,7 +120,7 @@ public class AdventurerBT : BaseBT
     // 1.adventurer without treasure will run away from forest spirit while seeing it
     // 2.close and pick up treasure if see
     // 3.wander if not see anything
-    // how to determine the priority of flee/seek treasure actions?
+    // Q: how to determine the priority of flee/seek treasure actions?
     private Node WithoutTreasureNode()
     {  
         Node sel1 = new Selector(SeekTreasureBehaviour(), new Sequence(RandomMove()));
@@ -137,49 +137,5 @@ public class AdventurerBT : BaseBT
         Root root = new Root(service);
         return root;
     }
-
-    //private enum Status
-    //{
-    //    Wander,
-    //    Flee,
-    //    Attack,
-    //    Seek
-    //}
-
-    //private Root ChooseBT(Status status)
-    //{
-    //    switch(status)
-    //    {
-    //        case Status.Wander:
-    //            return WanderBT();
-
-    //        case Status.Flee:
-    //            return FleeBT();
-
-    //        case Status.Attack:
-    //            return AttackBT();
-
-    //        case Status.Seek:
-    //            return SeekTreasureBT();
-
-    //        default: return WanderBT();
-    //    }
-    //}
-
-    
-    //private void UpdateStatus()
-    //{
-    //    if (hasTreasure)
-    //    {
-    //        if (seeSpirit) curStatus = Status.Attack;
-    //        else curStatus = Status.Wander;
-    //    }
-    //    else
-    //    {
-    //        if (seeSpirit) curStatus = Status.Flee;
-    //        else if (seeTreasure) curStatus = Status.Seek;
-    //        else curStatus = Status.Wander; 
-    //    }
-    //}
 
 }
