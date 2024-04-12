@@ -9,12 +9,15 @@
 
 ## Agents Design:
 The overall use of NPBehave and NavMesh related libraries, referring to the code structure in the Lab to write the behavior tree, but did not directly use the code in the Lab.
+
 Adventurer: Wander randomly on the map, if it is close to the Forest Spirit without getting the Treasure, it will run in the opposite direction, if it is close to the Treasure and not close to the Forest Spirit, it will go to pick up the Treasure. The Adventurer who has obtained the Treasure can attack when approaching the Forest Spirit.
+
 Forest Spirit: Wander randomly on the map, if it is close to the Adventurer who has not obtained the Treasure, it will attack, if the other party has the Treasure, it will run in the opposite direction.
 
 ## Features:
 1. Clear and correct behavior tree structure, most different types of operations are decoupled into different scripts.
 2. Added color changes with state design for Agents, making behavior more visualized.
+
 Color represents the status of each object:
 Treasure - Always golden
 Adventurer - usually blue, turns white when being chased, turns red after acquiring a treasure
