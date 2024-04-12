@@ -18,21 +18,25 @@ public class AdventurerBT : BaseBT
     private GameObject nearestForestSpirit;
     private GameObject nearestTreasure;
 
-    private Color originalColor = new Color(127, 220, 238);
+    private SpriteRenderer spriteRenderer;
+
+    private Color originalColor;
 
 
     // Start is called before the first frame update
     void Start()
     {
         ref_Move = GetComponent<BaseMovement>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
         SwitchBT(FinalBT());
     }
 
 
     public override void UpdateBlackboard()
     {
-        nearestForestSpirit = ref_Move.GetNearestObjByType("forestSpirit");
-        nearestTreasure = ref_Move.GetNearestObjByType("treasure");
+        if (ref_Move != null) nearestForestSpirit = ref_Move.GetNearestObjByType("forestSpirit");
+        if (ref_Move != null) nearestTreasure = ref_Move.GetNearestObjByType("treasure");
 
         if(nearestForestSpirit != null) distSpirit = Vector3.Distance(transform.position, nearestForestSpirit.transform.position);
         if(nearestTreasure != null) distTreasure = Vector3.Distance(transform.position, nearestTreasure.transform.position);
@@ -62,6 +66,7 @@ public class AdventurerBT : BaseBT
             }
             else
             {
+                other.gameObject.GetComponent<ForestSpiritBT>().distAdventurer = 100f;
                 ref_Move.RemoveObject(this.gameObject, "adventurer");
             }
         }

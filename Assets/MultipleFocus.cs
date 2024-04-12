@@ -72,9 +72,9 @@ public class MultipleFocus : MonoBehaviour
         targets.Add(target);
     }
 
-    public void addPlayerForTest()
-    {
-        // test
-        targets.Add(ref_manager.testPlayer.transform);
-    }
+    //public void addPlayerForTest()
+    //{
+    //    // test
+    //    targets.Add(ref_manager.testPlayer.transform);
+    //}
 }

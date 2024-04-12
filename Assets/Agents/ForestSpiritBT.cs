@@ -8,7 +8,7 @@ public class ForestSpiritBT : BaseBT
     // temp params for test behaviour tree logic
     public float distAdventurer;
 
-    public float distAdventurerAlert = 10f;
+    public float distAdventurerAlert = 20f;
 
     public bool hasTreasure = false;
 
@@ -27,9 +27,7 @@ public class ForestSpiritBT : BaseBT
         ref_Move = GetComponent<BaseMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
-        SwitchBT(FinalBT());
-
-        
+        SwitchBT(FinalBT());     
     }
 
 
@@ -50,21 +48,21 @@ public class ForestSpiritBT : BaseBT
 
     private void ChaseAdventurer()
     {
-        Debug.Log("ai attacking adventurer...");
+        //Debug.Log("ai attacking adventurer...");
         ChangeColor(Color.red, originalColor);
         ref_Move.ChaseObject(nearestAdventurer);
     }
 
     private void Wander()
     {
-        Debug.Log("ai wandering...");
+        //Debug.Log("ai wandering...");
         ChangeColor(originalColor, originalColor);
         ref_Move.Wander();
     }
 
     private void Flee()
     {
-        Debug.Log("ai flee...");
+        //Debug.Log("ai flee...");
         ChangeColor(Color.white, originalColor);
         ref_Move.FleeFromObj(nearestAdventurer);
     }

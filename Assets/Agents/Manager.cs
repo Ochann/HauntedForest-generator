@@ -9,7 +9,7 @@ public class Manager : MonoBehaviour
     public List<GameObject> adventurerObjs;
     public List<GameObject> treasureObjs;
 
-    public GameObject testPlayer;
+    //public GameObject testPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -107,7 +107,7 @@ public class Manager : MonoBehaviour
             targets.Add(transform);
         }
 
-        targets.Add(testPlayer.transform);
+        //targets.Add(testPlayer.transform);
 
         return targets;
     }

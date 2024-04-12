@@ -15,7 +15,7 @@ public class BaseMovement : MonoBehaviour
 
     private float wanderRadius = 30f;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody2D>();
 
@@ -28,17 +28,6 @@ public class BaseMovement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 
 
@@ -73,7 +62,7 @@ public class BaseMovement : MonoBehaviour
     {
         List<GameObject> list = null;
         GameObject nearestObj = null;
-        switch(type)
+        switch (type)
         {
             case "adventurer":
                 list = ref_Manager.adventurerObjs; break;

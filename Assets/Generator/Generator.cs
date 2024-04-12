@@ -46,7 +46,7 @@ public class Generator : MonoBehaviour
 
         SpawnItems();
 
-        SpawnPlayerForTest();
+        //SpawnPlayerForTest();
     }
 
     // Generate Map
@@ -226,11 +226,11 @@ public class Generator : MonoBehaviour
         }
     }
 
-    private void SpawnPlayerForTest()
-    {
-        GameObject obj2 = Instantiate(playerPrefab, new Vector3(0f, 0f, 0f), new Quaternion());
-        obj2.name = playerPrefab.name;
-        ref_manager.testPlayer = obj2;
-    }
+    //private void SpawnPlayerForTest()
+    //{
+    //    GameObject obj2 = Instantiate(playerPrefab, new Vector3(0f, 0f, 0f), new Quaternion());
+    //    obj2.name = playerPrefab.name;
+    //    ref_manager.testPlayer = obj2;
+    //}
 }
 
