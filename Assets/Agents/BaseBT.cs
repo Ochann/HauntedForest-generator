@@ -16,5 +16,19 @@ public class BaseBT : MonoBehaviour
         behaviourTree.Start();
     }
 
+    private void OnDestroy()
+    {
+        
+    }
+
+    public Root GetBehaviourTree() { return behaviourTree; }
+
+    public void ChangeColor(Color newColor, Color original)
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = original;
+        spriteRenderer.color = newColor;
+    }
+
     public virtual void UpdateBlackboard() { }
 }

@@ -12,6 +12,8 @@ public class BaseMovement : MonoBehaviour
     private Manager ref_Manager;
 
     private NavMeshAgent agent;
+
+    private float wanderRadius = 30f;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,22 +38,9 @@ public class BaseMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Adjust the rigidbodies position and orientation in FixedUpdate.
-        Move();
+        
     }
 
-    private void Move()
-    {
-        float speedX = m_AIMovement * m_Speed * Time.deltaTime;
-        float speedY = m_AIMovement * m_Speed * Time.deltaTime;
-        m_Rigidbody.velocity = new Vector2(speedX, speedY);
-    }
-
-    public void AIMove(float move)
-    {
-        m_AIMovement = (move > 1) ? 1 : (move < -1) ? -1 : move;
-        //Debug.Log(m_AIMovement);
-    }
 
     public void ChaseObject(GameObject obj)
     {
@@ -79,4 +68,61 @@ public class BaseMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
     }
+
+    public GameObject GetNearestObjByType(string type)
+    {
+        List<GameObject> list = null;
+        GameObject nearestObj = null;
+        switch(type)
+        {
+            case "adventurer":
+                list = ref_Manager.adventurerObjs; break;
+            case "forestSpirit":
+                list = ref_Manager.forestSpiritObjs; break;
+            case "treasure":
+                list = ref_Manager.treasureObjs; break;
+        }
+
+        if (list != null)
+        {
+            float minDistance = Mathf.Infinity;
+            foreach (GameObject obj in list)
+            {
+                float distance = Vector3.Distance(transform.position, obj.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestObj = obj;
+                }
+            }
+        }
+
+        return nearestObj;
+    }
+
+    public void RemoveObject(GameObject obj, string type)
+    {
+        if (obj != null) ref_Manager.RemoveObjectByType(obj, type);
+    }
+
+
+    public void Wander()
+    {
+        //Debug.Log("called wander");
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * wanderRadius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, 1))
+        {
+            Vector3 targetPos = hit.position;
+            if (targetPos != null) MoveToTarget(targetPos);
+        }
+    }
+
+    public void FleeFromObj(GameObject obj)
+    {
+        Vector3 fleeDirection = transform.position - obj.transform.position;
+        MoveToTarget(transform.position + fleeDirection);
+    }
+
 }

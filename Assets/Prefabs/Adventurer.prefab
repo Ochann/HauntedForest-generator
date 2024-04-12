@@ -104,6 +104,8 @@ MonoBehaviour:
   hasTreasure: 0
   distTreasure: 50
   distSpirit: 50
+  distTreasureAlert: 20
+  distSpiritAlert: 20
 --- !u!50 &6150161429346764805
 Rigidbody2D:
   serializedVersion: 4

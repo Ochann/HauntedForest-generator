@@ -63,12 +63,12 @@ public class MultipleFocus : MonoBehaviour
         {
             bounds.Encapsulate(targets[i].position);
         }
-        return bounds.size.x;
+        return Mathf.Max(bounds.size.x, bounds.size.y);
     }
 
     public void addTarget(Transform target)
     {
-        Debug.Log("add target..");
+        //Debug.Log("add target..");
         targets.Add(target);
     }
 

@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1989253f5511ce43861326a1b09ede7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targets: []
   offset: {x: 0, y: 0, z: -10}
   minZoom: 38
   maxZoom: 10
@@ -648,6 +649,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7dc720b29b29a64c84e08505fd4077e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forestSpiritObjs: []
+  adventurerObjs: []
+  treasureObjs: []
+  testPlayer: {fileID: 0}
 --- !u!4 &1522295756
 Transform:
   m_ObjectHideFlags: 0
@@ -753,9 +758,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1354549f3f369ab4cb49284652b8d8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 128
-  height: 72
-  forestFillRate: 41
+  width: 64
+  height: 64
+  forestFillRate: 43
   dirtFillRate: 48
   forestMap: {fileID: 1365247668}
   dirtMap: {fileID: 1340357624}
@@ -763,12 +768,12 @@ MonoBehaviour:
   grass: {fileID: 11400000, guid: 25d223d11e28c9c449e6256d7f80feb1, type: 2}
   treetop: {fileID: 11400000, guid: 41464340129ee8d438a4f511ab97ef04, type: 2}
   adventurerNum: 1
-  forestSpiritNum: 0
+  forestSpiritNum: 3
+  treasureNum: 0
   adventurerPrefab: {fileID: 399770856505285769, guid: bb9ff9b6ed3c2ca4da558fc1375403bf, type: 3}
   forestSpiritPrefab: {fileID: 6311145800248524203, guid: b62e2a55f5f493e458292405953d1566, type: 3}
   treasurePrefab: {fileID: 8043809388332200004, guid: 410f2cef39f481b43bdfecb375627bb8, type: 3}
   playerPrefab: {fileID: 3993315747943723909, guid: 933cada5ab85fd74793c2dee0103b3c5, type: 3}
-  ref_multiFocus: {fileID: 519420033}
   ref_manager: {fileID: 1522295755}
   navMesh: {fileID: 1991315038}
 --- !u!1 &1991315036

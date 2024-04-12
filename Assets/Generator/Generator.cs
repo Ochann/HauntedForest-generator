@@ -20,6 +20,7 @@ public class Generator : MonoBehaviour
 
     [SerializeField] private int adventurerNum = 1;
     [SerializeField] private int forestSpiritNum = 1;
+    [SerializeField] private int treasureNum = 1;
     [SerializeField] private GameObject adventurerPrefab;
     [SerializeField] private GameObject forestSpiritPrefab;
     [SerializeField] private GameObject treasurePrefab;
@@ -122,14 +123,14 @@ public class Generator : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Regenerate");
-            ref_manager.RemoveAllObjects();
-            GenerateMap();
-            SpawnAgents();
-            SpawnItems();
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Debug.Log("Regenerate");
+        //    ref_manager.RemoveAllObjects();
+        //    GenerateMap();
+        //    SpawnAgents();
+        //    SpawnItems();
+        //}
     }
 
 
@@ -181,40 +182,48 @@ public class Generator : MonoBehaviour
         }
     }
 
+    private Vector3 GetValidPos()
+    {
+        Vector3 pos;
+        while (true)
+        {
+            int x = UnityEngine.Random.Range(0, width);
+            int y = UnityEngine.Random.Range(0, height);
+            if (forestGrid[x, y] == 0)
+            {
+                pos = new Vector3(x, y, 0) - new Vector3Int(width / 2, height / 2, 0);
+                break;
+            }
+        }
+        return pos;
+    }
 
     // Spawn Agents
     private void SpawnAgents()
     {
         for(int i = 1; i <= adventurerNum;  i++)
         {
-            Vector3 pos;
-            while (true)
-            {
-                int x = UnityEngine.Random.Range(0, width);
-                int y = UnityEngine.Random.Range(0, height);
-                if (forestGrid[x, y] == 0)
-                {
-                    pos = new Vector3(x, y, 0) - new Vector3Int(width / 2, height / 2, 0);
-                    break;
-                }
-            }
+            Vector3 pos = GetValidPos();
             GameObject obj = Instantiate(adventurerPrefab, pos, new Quaternion());
-            obj.name = adventurerPrefab.name + "_" + i;
             ref_manager.AddAdventurer(obj);
         }
 
         for (int i = 1; i <= forestSpiritNum; i++)
         {
-            GameObject obj = Instantiate(forestSpiritPrefab, new Vector3(i*8f, i*8f, 0f), new Quaternion());
-            obj.name = forestSpiritPrefab.name + "_" + i;
+            Vector3 pos = GetValidPos();
+            GameObject obj = Instantiate(forestSpiritPrefab, pos, new Quaternion());
             ref_manager.AddForestSpirit(obj);
         }
     }
 
     private void SpawnItems()
     {
-        GameObject obj1 = Instantiate(treasurePrefab, new Vector3(0f, 0f, 0f), new Quaternion());
-        ref_manager.AddTreasure(obj1);
+        for (int i = 1; i <= treasureNum; i++)
+        {
+            Vector3 pos = GetValidPos();
+            GameObject obj1 = Instantiate(treasurePrefab, pos, new Quaternion());
+            ref_manager.AddTreasure(obj1);
+        }
     }
 
     private void SpawnPlayerForTest()

@@ -5,81 +5,128 @@ using NPBehave;
 
 public class AdventurerBT : BaseBT
 {
-    // temp params for test behaviour tree logic
+    // public params for test behaviour tree logic
     public bool hasTreasure = false;
-    public float distTreasure = 50f;
-    public float distSpirit = 50f;
+    public float distTreasure;
+    public float distSpirit;
+
+    public float distTreasureAlert = 20f;
+    public float distSpiritAlert = 20f;
 
 
     private BaseMovement ref_Move;
+    private GameObject nearestForestSpirit;
+    private GameObject nearestTreasure;
+
+    private Color originalColor = new Color(127, 220, 238);
 
 
     // Start is called before the first frame update
     void Start()
     {
         ref_Move = GetComponent<BaseMovement>();
-
         SwitchBT(FinalBT());
     }
 
-    private void OnDestroy()
-    {
-        if(behaviourTree != null) behaviourTree.Stop();
-    }
 
     public override void UpdateBlackboard()
     {
+        nearestForestSpirit = ref_Move.GetNearestObjByType("forestSpirit");
+        nearestTreasure = ref_Move.GetNearestObjByType("treasure");
+
+        if(nearestForestSpirit != null) distSpirit = Vector3.Distance(transform.position, nearestForestSpirit.transform.position);
+        if(nearestTreasure != null) distTreasure = Vector3.Distance(transform.position, nearestTreasure.transform.position);
+
         blackboard["hasTreasure"] = hasTreasure;
         blackboard["distSpirit"] = distSpirit;
         blackboard["distTreasure"] = distTreasure;
     }
 
-    /***      Actions       ***/
-    private void Move(float velocity)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        ref_Move.AIMove(velocity);
-        //Debug.Log("ai wandering...");
+        Debug.Log("on collide");
+        if (other.gameObject.CompareTag("Treasure"))
+        {
+            hasTreasure = true;
+            ref_Move.RemoveObject(other.gameObject, "treasure");
+            ChangeColor(Color.red, originalColor);
+            distTreasure = 100f;
+        }
+
+        else if(other.gameObject.CompareTag("ForestSpirit"))
+        {
+            if (hasTreasure)
+            {
+                ref_Move.RemoveObject(other.gameObject, "forestSpirit");
+                distSpirit = 100f;
+            }
+            else
+            {
+                ref_Move.RemoveObject(this.gameObject, "adventurer");
+            }
+        }
+    }
+
+    public bool IfHasTreasure()
+    {
+        return hasTreasure;
+    }
+
+    /***      Actions       ***/
+    private void Wander()
+    {
+        ref_Move.Wander();
+        if (hasTreasure) ChangeColor(Color.red, originalColor); 
+        else ChangeColor(originalColor, originalColor);
+        //Debug.Log("ai moving...");
     }
 
     private void AttackSpirit()
     {
-        Debug.Log("ai attacking spirit...");
-        GameObject obj = GameObject.Find("Player");
-        ref_Move.ChaseObject(obj);
+        //Debug.Log("ai attacking spirit...");
+        ref_Move.ChaseObject(nearestForestSpirit);
     }
 
     private void RunAway()
     {
         //Debug.Log("ai running away...");
+        ChangeColor(Color.white, originalColor);
+        ref_Move.FleeFromObj(nearestForestSpirit);
     }
 
     private void PickUpTreasure()
     {
         //Debug.Log("ai picking treasure...");
+        ref_Move.ChaseObject(nearestTreasure);
     }
 
 
 
     /***      Behaviour Node: MoveBehaviour      ***/
     // BT 1: 
-    private Node SetVelocity(float velocity)
+    //private Node SetVelocity(float velocity)
+    //{
+    //    return new Action(() => Move(velocity));
+    //}
+
+    private Node WanderBehaviour()
     {
-        return new Action(() => Move(velocity));
+        return new Action(() => Wander());
     }
 
     // Move forward at full speed for a random time
     private Node RandomMove()
     {
-        float waitTime = UnityEngine.Random.Range(0.1f, 1.0f);
-        return new Sequence(SetVelocity(1f),
+        float waitTime = UnityEngine.Random.Range(2.0f, 5.0f);
+        return new Sequence(WanderBehaviour(),
                             new Wait(waitTime),
-                            SetVelocity(0));
+                            WanderBehaviour());
     }
     private Node MoveBehaviour() 
     {
         Node seq = new Sequence(RandomMove());
         Node bb = new BlackboardCondition("distSpirit", 
-            Operator.IS_GREATER, 40f, Stops.IMMEDIATE_RESTART, seq);
+            Operator.IS_GREATER, distSpiritAlert, Stops.IMMEDIATE_RESTART, seq);
 
         return bb;
     }
@@ -88,7 +135,7 @@ public class AdventurerBT : BaseBT
     private Node FleeBehaviour()
     {
         Node bb = new BlackboardCondition("distSpirit",
-            Operator.IS_SMALLER, 40f, Stops.IMMEDIATE_RESTART, new Action(() => RunAway()));
+            Operator.IS_SMALLER, distSpiritAlert, Stops.IMMEDIATE_RESTART, new Action(() => RunAway()));
         return bb;
     }
 
@@ -101,7 +148,7 @@ public class AdventurerBT : BaseBT
     private Node SeekTreasureBehaviour()
     {
         Node bb = new BlackboardCondition("distTreasure",
-            Operator.IS_SMALLER, 40f, Stops.IMMEDIATE_RESTART, new Action(() => PickUpTreasure()));
+            Operator.IS_SMALLER, distTreasureAlert, Stops.IMMEDIATE_RESTART, new Action(() => PickUpTreasure()));
         return bb;
     }
 
