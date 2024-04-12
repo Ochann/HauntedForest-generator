@@ -44,7 +44,8 @@ public class AdventurerBT : BaseBT
     private void AttackSpirit()
     {
         Debug.Log("ai attacking spirit...");
-        ref_Move.ChaseObject("Player");
+        GameObject obj = GameObject.Find("Player");
+        ref_Move.ChaseObject(obj);
     }
 
     private void RunAway()

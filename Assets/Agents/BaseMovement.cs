@@ -53,11 +53,11 @@ public class BaseMovement : MonoBehaviour
         //Debug.Log(m_AIMovement);
     }
 
-    public void ChaseObject(string name)
+    public void ChaseObject(GameObject obj)
     {
         if (ref_Manager != null)
         {
-            GameObject obj = ref_Manager.FindGameObjByName(name);
+            //GameObject obj = ref_Manager.FindGameObjByName(name);
             if (obj != null)
             {
                 MoveToTarget(obj.transform.position);

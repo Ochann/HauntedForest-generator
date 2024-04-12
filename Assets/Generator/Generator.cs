@@ -44,6 +44,8 @@ public class Generator : MonoBehaviour
         SpawnAgents();
 
         SpawnItems();
+
+        SpawnPlayerForTest();
     }
 
     // Generate Map
@@ -198,27 +200,28 @@ public class Generator : MonoBehaviour
             }
             GameObject obj = Instantiate(adventurerPrefab, pos, new Quaternion());
             obj.name = adventurerPrefab.name + "_" + i;
-            ref_manager.AddObject(obj);
+            ref_manager.AddAdventurer(obj);
         }
 
         for (int i = 1; i <= forestSpiritNum; i++)
         {
             GameObject obj = Instantiate(forestSpiritPrefab, new Vector3(i*8f, i*8f, 0f), new Quaternion());
             obj.name = forestSpiritPrefab.name + "_" + i;
-            ref_manager.AddObject(obj);
+            ref_manager.AddForestSpirit(obj);
         }
     }
 
     private void SpawnItems()
     {
         GameObject obj1 = Instantiate(treasurePrefab, new Vector3(0f, 0f, 0f), new Quaternion());
-        ref_manager.AddObject(obj1);
+        ref_manager.AddTreasure(obj1);
+    }
 
+    private void SpawnPlayerForTest()
+    {
         GameObject obj2 = Instantiate(playerPrefab, new Vector3(0f, 0f, 0f), new Quaternion());
-        obj2.name = playerPrefab.name; 
-        ref_manager.AddObject(obj2);
-        
-
+        obj2.name = playerPrefab.name;
+        ref_manager.testPlayer = obj2;
     }
 }
 

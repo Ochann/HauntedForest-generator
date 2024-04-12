@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class MultipleFocus : MonoBehaviour
 {
-    private List<Transform> targets;
+    public List<Transform> targets;
     [SerializeField] private Vector3 offset;
 
     [SerializeField] private float minZoom = 38f;
@@ -20,6 +20,7 @@ public class MultipleFocus : MonoBehaviour
     {
         cam = GetComponent<Camera>();
         
+
     }
 
     private void LateUpdate()
@@ -69,5 +70,11 @@ public class MultipleFocus : MonoBehaviour
     {
         Debug.Log("add target..");
         targets.Add(target);
+    }
+
+    public void addPlayerForTest()
+    {
+        // test
+        targets.Add(ref_manager.testPlayer.transform);
     }
 }
